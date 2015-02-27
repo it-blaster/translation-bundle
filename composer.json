@@ -1,0 +1,12 @@
+{
+    "name": "it-blaster/translation-bundle",
+    "type": "symfony-bundle",
+    "require": {
+        "symfony/symfony": ">=2.2",
+    },
+    "autoload": {
+        "psr-0": { "ItBlaster\\TranslationBundle": "" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "ItBlaster/TranslationBundle"
+}
