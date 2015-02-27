@@ -35,3 +35,15 @@ public function registerBundles()
     );
 }
 ```
+
+В app/config/config.yml переопределяеем путь до класса propel-бихейвора sluggable
+
+``` bash
+ propel:
+     ...
+     behaviors:
+         ...
+         sluggable: ItBlaster\TranslationBundle\Behavior\ExtendedSluggableBehavior
+```
+
+В файле `schema.yml` у таблицы прописываем бихейвор, например:

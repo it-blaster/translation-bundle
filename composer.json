@@ -1,6 +1,7 @@
 {
     "name": "it-blaster/translation-bundle",
     "type": "symfony-bundle",
+    "license" : "MIT",
     "require": {
         "symfony/symfony": ">=2.2"
     },
