@@ -13,7 +13,9 @@ class ExtendedSluggableBehavior extends \Behavior
         'replacement'     => '-',
         'separator'       => '-',
         'permanent'       => 'false',
-        'scope_column'    => ''
+        'scope_column'    => '',
+        'primary_string'  => '',
+        'i18n_languages'  => 'false', //если true, то нужно пытаться брать значение у языковой версии
     );
 
     /**
@@ -21,6 +23,17 @@ class ExtendedSluggableBehavior extends \Behavior
      */
     public function modifyTable()
     {
+        $table = $this->getTable();
+        $primary_string = $this->getParameter('primary_string');
+
+        if(!$primary_string) {
+            throw new \Exception('<------ERROR------- Need set parameter "primary_string" in table '.$table->getName().' ------ERROR------->');
+        }
+
+        if(!$table->hasColumn($primary_string)) {
+            throw new \Exception('<------ERROR------- Not found column "'.$primary_string.'" in table '.$table->getName().' ------ERROR------->');
+        }
+
         if (!$this->getTable()->containsColumn($this->getParameter('slug_column'))) {
             $this->getTable()->addColumn(array(
                 'name' => $this->getParameter('slug_column'),
@@ -433,5 +446,71 @@ public function findOneBySlug(\$slug, \$con = null)
     protected function underscore($string)
     {
         return strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('\\1_\\2', '\\1_\\2'), strtr($string, '_', '.')));
+    }
+
+
+    /**
+     * Переопределяем метод __toString
+     *
+     * @param $script
+     */
+    public function objectFilter(&$script)
+    {
+        $i18n_languages = $this->getParameter('i18n_languages');
+        $primary_string = $this->getParameter('primary_string');
+        $primary_string_column =  $i18n_languages!='false' ? $primary_string : $this->getColumnForParameter('primary_string');
+        if(!$primary_string_column) {
+            throw new \Exception('<------ERROR------- Not found column "'.$primary_string.'" in table '.$this->getTable()->getName().' ------ERROR------->');
+        }
+
+        $get_primary_string = 'get'.($i18n_languages!='false' ? $this->CamelCase($primary_string) : $primary_string_column->getPhpName());
+
+        $toString = '
+
+    /**
+     * Отдаём PrimaryString
+     *
+     * @return string
+     */
+    public function __toString()
+    {';
+
+        //есть языковые версии
+        if ($i18n_languages!='false') {
+            $toString .= '
+        $to_string = "Новая запись";
+        $languages = explode(",","'.$i18n_languages.'");
+        foreach ($languages as $language) {
+            $str = $this->setLocale($language)->'.$get_primary_string.'();
+            if ($str) {
+                return $str;
+            }
+        }
+        return $to_string;';
+        } else { //нет языковых версий
+            $toString .= '
+        return $this->'.$get_primary_string.'() ? $this->'.$get_primary_string.'() : "Новая запись";';
+        }
+        $toString .= '
+    }
+        ';
+
+        $table = $this->getTable();
+        $newToStringMethod = sprintf($toString, $table->getName(), $table->getPhpName(), $table->getPhpName());
+
+        $parser = new \PropelPHPParser($script, true);
+        $parser->replaceMethod('__toString', $newToStringMethod);
+        $script = $parser->getCode();
+    }
+
+    /**
+     * Перевод из венгерского стиля в CamelCase
+     *
+     * @param $name
+     * @return mixed
+     */
+    protected function CamelCase($name)
+    {
+        return ucfirst(\Propel\PropelBundle\Util\PropelInflector::camelize($name));
     }
 }
