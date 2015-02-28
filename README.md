@@ -36,7 +36,7 @@ public function registerBundles()
 }
 ```
 
-В app/config/config.yml переопределяеем путь до класса propel-бихейвора sluggable
+В `app/config/config.yml` переопределяеем путь до класса propel-бихейвора <b>sluggable</b>
 
 ``` bash
  propel:
