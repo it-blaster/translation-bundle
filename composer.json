@@ -1,5 +1,6 @@
 {
     "name": "it-blaster/translation-bundle",
+    "description": "Symfony2 bundle to work with the language versions of the website. Includes advanced Propel behavior sluggable.",
     "type": "symfony-bundle",
     "license" : "MIT",
     "require": {
