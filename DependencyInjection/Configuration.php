@@ -29,6 +29,14 @@ class Configuration implements ConfigurationInterface
                 ->requiresAtLeastOneElement()
                 ->prototype('scalar')->end()
             ->end()
+            ->arrayNode('slug_locales')
+                ->beforeNormalization()
+                    ->ifString()
+                    ->then(function($v) { return preg_split('/\s*,\s*/', $v); })
+                ->end()
+                ->requiresAtLeastOneElement()
+                ->prototype('scalar')->end()
+            ->end()
         ->end();
 
         return $treeBuilder;

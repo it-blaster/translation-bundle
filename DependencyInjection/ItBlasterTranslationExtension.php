@@ -23,6 +23,7 @@ class ItBlasterTranslationExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('it_blaster_translation.locales', $config['locales']);
+        $container->setParameter('it_blaster_translation.slug_locales', $config['slug_locales']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
