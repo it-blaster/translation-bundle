@@ -18,11 +18,18 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('itblaster_translation');
+        $rootNode = $treeBuilder->root('it_blaster_translation');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode->children()
+            ->arrayNode('locales')
+                ->beforeNormalization()
+                    ->ifString()
+                    ->then(function($v) { return preg_split('/\s*,\s*/', $v); })
+                ->end()
+                ->requiresAtLeastOneElement()
+                ->prototype('scalar')->end()
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }
