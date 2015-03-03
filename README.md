@@ -53,10 +53,11 @@ public function registerBundles()
     </behavior>
 ```
 
-Если вы используете языковый версии (i18n), необходимо указать параметр `i18n_languages` с указанием языков, по переводам которых будет формироваться slug. Если по первому языку нет значения, система будет пытаться сформировать slug на основе следующего перевода.
+Если вы используете языковый версии (i18n), необходимо в файле `config.yml` указать параметры `it_blaster_translation.locales` и `it_blaster_translation.slug_locales`.
 ``` bash
-    <behavior name="sluggable">
-        <parameter name="primary_string" value="title" />
-        <parameter name="i18n_languages" value="en,ru" />
-    </behavior>
+it_blaster_translation:
+    locales: ['ru', 'en','uk','cs']
+    slug_locales: ['en','ru']
 ```
+Параметр `it_blaster_translation.locales` отвечает за порядок вывода полей в форме редактирвоания в CMS.
+Параметр `it_blaster_translation.slug_locales` отвечает за порядок языков, на основе которых будет формироваться slug. Если значение по первому языку не заполнено, система будет сформировать slug на основе значения следующей языковой версии.

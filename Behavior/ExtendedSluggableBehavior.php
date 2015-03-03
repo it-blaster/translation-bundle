@@ -15,8 +15,9 @@ class ExtendedSluggableBehavior extends \Behavior
         'permanent'       => 'false',
         'scope_column'    => '',
         'primary_string'  => '',
-        'i18n_languages'  => 'false', //если true, то нужно пытаться брать значение у языковой версии
     );
+
+    protected $container;
 
     /**
      * Add the slug_column to the current table
@@ -143,6 +144,16 @@ if (\$this->isColumnModified($const) && \$this->{$this->getColumnGetter()}()) {
         return $script;
     }
 
+    protected function getContainer()
+    {
+        if (!$this->container) {
+            $kernel = new \AppKernel('prod', false);
+            $kernel->boot();
+            $this->container = $kernel->getContainer();
+        }
+        return $this->container;
+    }
+
     /**
      * Метож сортировки элементов языковых версий
      *
@@ -150,9 +161,7 @@ if (\$this->isColumnModified($const) && \$this->{$this->getColumnGetter()}()) {
      */
     protected function sortI18ns(&$script)
     {
-        $kernel = new \AppKernel('prod', false);
-        $kernel->boot();
-        $locales = $kernel->getContainer()->getParameter("locales");
+        $locales = $this->getContainer()->getParameter("it_blaster_translation.locales");
         $langs = "array(";
         foreach ($locales as $locale) {
             $langs.='"'.$locale.'",';
@@ -519,10 +528,12 @@ public function findOneBySlug(\$slug, \$con = null)
      */
     protected function getToStringMethod()
     {
+
+
         $primary_string = $this->getParameter('primary_string');
-        $i18n_languages = $this->getParameter('i18n_languages');
-        $primary_string_column =  $i18n_languages!='false' ? $primary_string : $this->getColumnForParameter('primary_string');
-        $get_primary_string = 'get'.($i18n_languages!='false' ? $this->CamelCase($primary_string) : $primary_string_column->getPhpName());
+        $i18n_languages = $this->getContainer()->getParameter("it_blaster_translation.slug_locales");
+        $primary_string_column =  count($i18n_languages) ? $primary_string : $this->getColumnForParameter('primary_string');
+        $get_primary_string = 'get'.(count($i18n_languages) ? $this->CamelCase($primary_string) : $primary_string_column->getPhpName());
 
         if(!$primary_string_column) {
             throw new \Exception('<------ERROR------- Not found column "'.$primary_string.'" in table '.$this->getTable()->getName().' ------ERROR------->');
@@ -539,10 +550,16 @@ public function findOneBySlug(\$slug, \$con = null)
     {';
 
         //есть языковые версии
-        if ($i18n_languages!='false') {
+        if (count($i18n_languages)) {
+            $languages = 'array(';
+            foreach ($i18n_languages as $lang) {
+                $languages.='"'.$lang.'",';
+            }
+            $languages.=')';
+
             $toString .= '
         $to_string = "Новая запись";
-        $languages = explode(",","'.$i18n_languages.'");
+        $languages = '.$languages.';
         foreach ($languages as $language) {
             $str = $this->setLocale($language)->'.$get_primary_string.'();
             if ($str) {
