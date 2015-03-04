@@ -13,6 +13,7 @@
     ],
     "require": {
         "symfony/symfony": ">=2.2",
+        "propel/propel": "~2.0@dev",
         "propel/propel-bundle": ">=1.0"
     },
     "autoload": {
