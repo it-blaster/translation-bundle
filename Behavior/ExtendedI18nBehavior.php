@@ -2,13 +2,11 @@
 
 namespace ItBlaster\TranslationBundle\Behavior;
 
-class ExtendedI18nBehavior extends \Behavior
+class ExtendedI18nBehavior extends TranslationBehavior
 {
     protected $parameters = array(
         'primary_string'  => '',
     );
-
-    protected $container;
 
     /**
      * Add the slug_column to the current table
@@ -37,17 +35,6 @@ class ExtendedI18nBehavior extends \Behavior
 
         return $script;
     }
-
-    protected function getContainer()
-    {
-        if (!$this->container) {
-            $kernel = new \AppKernel('prod', false);
-            $kernel->boot();
-            $this->container = $kernel->getContainer();
-        }
-        return $this->container;
-    }
-
 
     /**
      * Метож сортировки элементов языковых версий

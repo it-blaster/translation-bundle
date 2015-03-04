@@ -2,7 +2,7 @@
 
 namespace ItBlaster\TranslationBundle\Behavior;
 
-class ExtendedSluggableBehavior extends \Behavior
+class ExtendedSluggableBehavior extends TranslationBehavior
 {
     // default parameters value
     protected $parameters = array(
@@ -16,8 +16,6 @@ class ExtendedSluggableBehavior extends \Behavior
         'scope_column'    => '',
         'primary_string'  => '',
     );
-
-    protected $container;
 
     /**
      * Add the slug_column to the current table
@@ -143,17 +141,7 @@ if (\$this->isColumnModified($const) && \$this->{$this->getColumnGetter()}()) {
 
         return $script;
     }
-
-    protected function getContainer()
-    {
-        if (!$this->container) {
-            $kernel = new \AppKernel('prod', false);
-            $kernel->boot();
-            $this->container = $kernel->getContainer();
-        }
-        return $this->container;
-    }
-
+    
     /**
      * Метож сортировки элементов языковых версий
      *
