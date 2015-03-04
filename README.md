@@ -46,12 +46,30 @@ public function registerBundles()
          sluggable: ItBlaster\TranslationBundle\Behavior\ExtendedSluggableBehavior
 ```
 
-В файле `schema.yml` у таблицы прописываем бихейвор с указанием параметра `primary_string`, на основе которой будет формироваться slug. Например:
+В файле `schema.yml` у таблицы прописываем бихейвор с указанием параметра `primary_string`, на основе которой будет формироваться `slug`. Например:
 ``` bash
     <behavior name="sluggable">
         <parameter name="primary_string" value="title" />
     </behavior>
 ```
+
+Если вам создавать `slug` у таблицы не нужно, а нужно только выводить поля языковых версий в правильном порядке, то достаточно прописать бихейвор `it_blaster_i18n`:
+``` bash
+        <behavior name="it_blaster_i18n">
+            <parameter name="primary_string" value="question" />
+        </behavior>
+```
+
+И прописать в config.yml его подключение:
+``` bash
+ propel:
+     ...
+     behaviors:
+         ...
+         it_blaster_i18n: ItBlaster\TranslationBundle\Behavior\ExtendedI18nBehavior
+```
+
+Бихейвор `ExtendedSluggableBehavior` уже включает в себя методы из бихейвора `ExtendedI18nBehavior`, поэтому вместе их прописывать в схеме не нужно.
 
 Если вы используете языковый версии (i18n), необходимо в файле `config.yml` указать параметры `it_blaster_translation.locales` и `it_blaster_translation.slug_locales`.
 ``` bash
