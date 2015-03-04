@@ -556,7 +556,7 @@ public function findOneBySlug(\$slug, \$con = null)
             $languages.=')';
 
             $toString .= '
-        $to_string = "Новая запись";
+        $to_string = $this->isNew() ? "Новая запись" : "";
         $languages = '.$languages.';
         foreach ($languages as $language) {
             $str = $this->setLocale($language)->'.$get_primary_string.'();
