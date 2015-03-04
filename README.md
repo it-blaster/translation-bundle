@@ -1,4 +1,7 @@
 # TranslationBundle
+
+[![Build Status](https://scrutinizer-ci.com/g/it-blaster/translation-bundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/it-blaster/translation-bundle/build-status/master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/it-blaster/translation-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/it-blaster/translation-bundle/?branch=master)
+
 Вспомогательный бандл для работы с языковыми версиями на сайте
 
 ## Установка
