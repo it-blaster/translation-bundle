@@ -33,7 +33,7 @@ class ExtendedI18nBehavior extends \Behavior
         $this->builder = $builder;
         $script = '';
 
-        $this->sortI18ns($script);
+        $this->addSortI18ns($script);
 
         return $script;
     }
@@ -54,7 +54,7 @@ class ExtendedI18nBehavior extends \Behavior
      *
      * @param $script
      */
-    protected function sortI18ns(&$script)
+    protected function addSortI18ns(&$script)
     {
         $locales = $this->getContainer()->getParameter("it_blaster_translation.locales");
         $langs = "array(";

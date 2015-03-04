@@ -139,7 +139,7 @@ if (\$this->isColumnModified($const) && \$this->{$this->getColumnGetter()}()) {
         $this->addLimitSlugSize($script);
         $this->addMakeSlugUnique($script);
 
-        $this->sortI18ns($script);
+        $this->addSortI18ns($script);
 
         return $script;
     }
@@ -159,7 +159,7 @@ if (\$this->isColumnModified($const) && \$this->{$this->getColumnGetter()}()) {
      *
      * @param $script
      */
-    protected function sortI18ns(&$script)
+    protected function addSortI18ns(&$script)
     {
         $locales = $this->getContainer()->getParameter("it_blaster_translation.locales");
         $langs = "array(";
