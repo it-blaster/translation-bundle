@@ -528,8 +528,6 @@ public function findOneBySlug(\$slug, \$con = null)
      */
     protected function getToStringMethod()
     {
-
-
         $primary_string = $this->getParameter('primary_string');
         $i18n_languages = $this->getContainer()->getParameter("it_blaster_translation.slug_locales");
         $primary_string_column =  count($i18n_languages) ? $primary_string : $this->getColumnForParameter('primary_string');
