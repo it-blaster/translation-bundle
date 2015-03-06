@@ -138,6 +138,7 @@ if (\$this->isColumnModified($const) && \$this->{$this->getColumnGetter()}()) {
         $this->addMakeSlugUnique($script);
 
         $this->addSortI18ns($script);
+        $this->addToSlug($script);
 
         return $script;
     }
@@ -192,6 +193,60 @@ protected function createSlug()
 ";
     }
 
+
+    /**
+     * Метод для формирования Slug
+     *
+     * @param $script
+     */
+    protected function addToSlug(&$script)
+    {
+
+        $primary_string = $this->getParameter('primary_string');
+        $i18n_languages = $this->getContainer()->getParameter("it_blaster_translation.slug_locales");
+        $primary_string_column =  count($i18n_languages) ? $primary_string : $this->getColumnForParameter('primary_string');
+        $get_primary_string = 'get'.(count($i18n_languages) ? $this->CamelCase($primary_string) : $primary_string_column->getPhpName());
+
+        if(!$primary_string_column) {
+            throw new \Exception('<------ERROR------- Not found column "'.$primary_string.'" in table '.$this->getTable()->getName().' ------ERROR------->');
+        }
+
+        $toSlug = '
+/**
+ * Метод для формирования Slug
+ *
+ * @return string
+ */
+protected function toSlug() {';
+
+        //есть языковые версии
+        if (count($i18n_languages)) {
+            $languages = 'array(';
+            foreach ($i18n_languages as $lang) {
+                $languages.='"'.$lang.'",';
+            }
+            $languages.=')';
+
+            $toSlug .= '
+        $to_string = $this->isNew() ? "Новая запись" : "";
+        $languages = '.$languages.';
+        foreach ($languages as $language) {
+            $str = $this->setLocale($language)->'.$get_primary_string.'();
+            if ($str) {
+                return $str;
+            }
+        }
+        return $to_string;';
+        } else { //нет языковых версий
+            $toSlug .= '
+        return $this->'.$get_primary_string.'() ? $this->'.$get_primary_string.'() : "Новая запись";';
+        }
+        $toSlug .= '
+    }
+    ';
+        $script .= $toSlug;
+    }
+
     protected function addCreateRawSlug(&$script)
     {
         $pattern = $this->getParameter('slug_pattern');
@@ -207,7 +262,7 @@ protected function createRawSlug()
         if ($pattern) {
             $script .= "return '" . str_replace(array('{', '}'), array('\' . $this->cleanupSlugPart($this->get', '()) . \''), $pattern) . "';";
         } else {
-            $script .= "return \$this->cleanupSlugPart(\$this->__toString());";
+            $script .= "return \$this->cleanupSlugPart(\$this->toSlug());";
         }
         $script .= "
 }

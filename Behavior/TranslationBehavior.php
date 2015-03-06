@@ -67,7 +67,7 @@ protected function sortI18ns($elements) {
     protected function getToStringMethod()
     {
         $primary_string = $this->getParameter('primary_string');
-        $i18n_languages = $this->getContainer()->getParameter("it_blaster_translation.slug_locales");
+        $i18n_languages = $this->getContainer()->getParameter("it_blaster_translation.locales");
         $primary_string_column =  count($i18n_languages) ? $primary_string : $this->getColumnForParameter('primary_string');
         $get_primary_string = 'get'.(count($i18n_languages) ? $this->CamelCase($primary_string) : $primary_string_column->getPhpName());
 
@@ -82,8 +82,7 @@ protected function sortI18ns($elements) {
      *
      * @return string
      */
-    public function __toString()
-    {';
+    public function __toString() {';
 
         //есть языковые версии
         if (count($i18n_languages)) {
