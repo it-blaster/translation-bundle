@@ -106,6 +106,11 @@ return \ItBlaster\TranslationBundle\Model\TranslationPeer::getListForLocale("en"
 
 Для того, чтобы наполнить таблицу переводов необходимо запустить индексирующий таск в консоле:
 ``` bash
+'php app/console translation:extract en --dir=./src/ --output-dir=./src/App/MainBundle/Resources/translations/ --output-format="php"'
+```
+
+Если вам нужны переводы только файлов шаблонов (twig), то выключите из выборки php-файлы
+``` bash
 'php app/console translation:extract en --dir=./src/ --output-dir=./src/App/MainBundle/Resources/translations/ --exclude-name="*.php" --output-format="php"'
 ```
 
