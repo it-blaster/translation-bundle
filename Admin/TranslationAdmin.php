@@ -24,8 +24,6 @@ class TranslationAdmin extends Admin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
-        //$listMapper->add('Title');
-
         foreach ($this->getConfigurationPool()->getContainer()->getParameter('it_blaster_translation.locales') as $locale) {
             $listMapper->add('getTitle'.$locale, null, array(
                 'label'         =>  $locale,
@@ -76,7 +74,6 @@ class TranslationAdmin extends Admin
     {
         $collection
             ->remove('export')
-//            ->remove('delete')
         ;
     }
 

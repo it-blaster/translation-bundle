@@ -1,10 +1,12 @@
-# TranslationBundle
+TranslationBundle
+====================
 
 [![Build Status](https://scrutinizer-ci.com/g/it-blaster/translation-bundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/it-blaster/translation-bundle/build-status/master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/it-blaster/translation-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/it-blaster/translation-bundle/?branch=master)
 
 Вспомогательный бандл для работы с языковыми версиями на сайте
 
-## Установка
+Installation
+------------
 
 Добавьте <b>ItBlasterTranslationBundle</b> в `composer.json`:
 
@@ -83,3 +85,31 @@ it_blaster_translation:
 ```
 Параметр `it_blaster_translation.locales` отвечает за порядок вывода полей в форме редактирвоания в CMS.
 Параметр `it_blaster_translation.slug_locales` отвечает за порядок языков, на основе которых будет формироваться slug. Если значение по первому языку не заполнено, система будет сформировать slug на основе значения следующей языковой версии.
+
+Таблица переводов
+-------
+Необходимо в папке проекта src создать файлы переводов <b>messages.`locale`.php</b> и <b>validators.`locale`.php</b> с содержимым:
+``` bash
+<?php
+return \ItBlaster\TranslationBundle\Model\TranslationPeer::getListForLocale("LOCALE");
+```
+
+Например, для английского языка нужно создать файлы:
+1. src\App\MainBundle\Resources\translations\messages.en.php
+2. src\App\MainBundle\Resources\translations\validators.en.php
+
+Со следующим содержимым:
+``` bash
+<?php
+return \ItBlaster\TranslationBundle\Model\TranslationPeer::getListForLocale("en");
+```
+
+Для того, чтобы наполнить таблицу переводов необходимо запустить индексирующий таск в консоле:
+``` bash
+'php app/console translation:extract fr --dir=./src/ --output-dir=./src/App/MainBundle/Resources/translations/ --exclude-name="*.php" --output-format="php"'
+```
+
+Credits
+-------
+
+It-Blaster <it-blaster@yandex.ru>

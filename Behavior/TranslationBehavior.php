@@ -1,6 +1,7 @@
 <?php
 
 namespace ItBlaster\TranslationBundle\Behavior;
+use ItBlaster\TranslationBundle\Traits\TranslationTrait;
 
 /**
  * Базовый класс
@@ -10,26 +11,11 @@ namespace ItBlaster\TranslationBundle\Behavior;
  */
 abstract class TranslationBehavior extends \Behavior
 {
-    protected $container;
+    use TranslationTrait;
 
     protected $parameters = array(
         'primary_string'  => '',
     );
-
-    /**
-     * Да да, тот самый контейнер, про который вы подумали
-     *
-     * @return mixed
-     */
-    protected function getContainer()
-    {
-        if (!$this->container) {
-            $kernel = new \AppKernel('prod', false);
-            $kernel->boot();
-            $this->container = $kernel->getContainer();
-        }
-        return $this->container;
-    }
 
     /**
      * Метож сортировки элементов языковых версий
@@ -38,7 +24,7 @@ abstract class TranslationBehavior extends \Behavior
      */
     protected function addSortI18ns(&$script)
     {
-        $locales = $this->getContainer()->getParameter("it_blaster_translation.locales");
+        $locales = $this->getLocales();
         $langs = "array(";
         foreach ($locales as $locale) {
             $langs.='"'.$locale.'",';
@@ -77,7 +63,7 @@ protected function sortI18ns($elements) {
     protected function getToStringMethod()
     {
         $primary_string = $this->getParameter('primary_string');
-        $i18n_languages = $this->getContainer()->getParameter("it_blaster_translation.locales");
+        $i18n_languages = $this->getLocales();
         $primary_string_column =  count($i18n_languages) ? $primary_string : $this->getColumnForParameter('primary_string');
         $get_primary_string = 'get'.(count($i18n_languages) ? $this->CamelCase($primary_string) : $primary_string_column->getPhpName());
 
