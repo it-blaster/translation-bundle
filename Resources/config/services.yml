@@ -1,6 +1,7 @@
 parameters:
     it_blaster_translation.admin.class: ItBlaster\TranslationBundle\Admin\TranslationAdmin
     it_blaster_translation.model.class: ItBlaster\TranslationBundle\Model\Translation
+    jms_translation.dumper.php_dumper.class: ItBlaster\TranslationBundle\Translation\Dumper\PhpDumper
 
 services:
     it_blaster_translation.admin.translation:
