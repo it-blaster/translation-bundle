@@ -68,7 +68,7 @@ protected function sortI18ns($elements) {
         $get_primary_string = 'get'.(count($i18n_languages) ? $this->CamelCase($primary_string) : $primary_string_column->getPhpName());
 
         if(!$primary_string_column) {
-            throw new \Exception('<------ERROR------- Not found column "'.$primary_string.'" in table '.$this->getTable()->getName().' ------ERROR------->');
+            $this->exceptionError('Not found column "'.$primary_string.'" in table '.$this->getTable()->getName());
         }
 
         $toString = '
