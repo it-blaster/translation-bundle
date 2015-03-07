@@ -64,7 +64,7 @@ class PhpDumper extends ArrayStructureDumper
     private function dumpStructureRecursively(array $structure)
     {
         $locales = $this->getLocales();
-
+        $translation_strings = array();
         foreach ($locales as $locale) {
             $translation_strings[$locale] = array();
             $translation_list = TranslationQuery::create()->joinWithI18n($locale)->find();
@@ -84,10 +84,7 @@ class PhpDumper extends ArrayStructureDumper
             /** @var Message $v */
             if (!isset($translation_strings['en'][$k])) {
                 $trans_obj = new Translation();
-                $trans_obj
-                    ->setLocale('en')
-                    ->setTitle($k)
-                    ->save();
+                $this->setParamsTransObj($trans_obj, 'en', $k);
                 $translation_strings['en'][$k] = $trans_obj;
             }
 
@@ -96,11 +93,7 @@ class PhpDumper extends ArrayStructureDumper
                     if (!isset($translation_strings[$locale][$k])) {
                         /** @var Translation $trans_obj */
                         $trans_obj = $translation_strings['en'][$k];
-
-                        $trans_obj
-                            ->setLocale($locale)
-                            ->setTitle('')
-                            ->save();
+                        $this->setParamsTransObj($trans_obj,$locale);
                     }
                 }
             }
@@ -108,5 +101,20 @@ class PhpDumper extends ArrayStructureDumper
             $this->writer->indent();
             $this->writer->outdent();
         }
+    }
+
+    /**
+     * Проставляет параметры у объекта перевода
+     *
+     * @param $trans_obj
+     * @param $locale
+     * @param string $title
+     */
+    private function setParamsTransObj(&$trans_obj, $locale, $title='')
+    {
+        $trans_obj
+            ->setLocale($locale)
+            ->setTitle($title)
+            ->save();
     }
 }
