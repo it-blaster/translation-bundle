@@ -1,1 +1,10 @@
+parameters:
+    it_blaster_translation.admin.class: ItBlaster\TranslationBundle\Admin\TranslationAdmin
+    it_blaster_translation.model.class: ItBlaster\TranslationBundle\Model\Translation
+
 services:
+    it_blaster_translation.admin.translation:
+        class: %it_blaster_translation.admin.class%
+        arguments: [~, %it_blaster_translation.model.class%, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: propel, group: admin_group_label, label: Переводы}

@@ -2,7 +2,13 @@
 
 namespace ItBlaster\TranslationBundle\Behavior;
 
-class TranslationBehavior extends \Behavior
+/**
+ * Базовый класс
+ *
+ * Class TranslationBehavior
+ * @package ItBlaster\TranslationBundle\Behavior
+ */
+abstract class TranslationBehavior extends \Behavior
 {
     protected $container;
 
