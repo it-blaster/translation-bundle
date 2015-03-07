@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database
+        name="default"
+        defaultIdMethod="native"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.7/database.xsd"
+        namespace="ItBlaster\TranslationBundle\Model">
+
+    <table name="translation" description="Translation">
+        <column name="id"               type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="title"            type="varchar" required="true" primaryString="true" />
+
+        <behavior name="i18n">
+            <parameter name="i18n_columns" value="title" />
+        </behavior>
+        <behavior name="it_blaster_translation_model" >
+            <parameter name="primary_string" value="title" />
+        </behavior>
+    </table>
+
+</database>

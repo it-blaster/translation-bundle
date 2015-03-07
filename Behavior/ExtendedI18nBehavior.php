@@ -4,10 +4,6 @@ namespace ItBlaster\TranslationBundle\Behavior;
 
 class ExtendedI18nBehavior extends TranslationBehavior
 {
-    protected $parameters = array(
-        'primary_string'  => '',
-    );
-
     /**
      * Add the slug_column to the current table
      */

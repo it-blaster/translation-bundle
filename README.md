@@ -47,6 +47,7 @@ public function registerBundles()
      behaviors:
          ...
          sluggable: ItBlaster\TranslationBundle\Behavior\ExtendedSluggableBehavior
+         it_blaster_translation_model: ItBlaster\TranslationBundle\Behavior\TranslationModelBehavior
 ```
 
 В файле `schema.yml` у таблицы прописываем бихейвор с указанием параметра `primary_string`, на основе которой будет формироваться `slug`. Например:

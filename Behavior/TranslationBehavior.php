@@ -6,6 +6,10 @@ class TranslationBehavior extends \Behavior
 {
     protected $container;
 
+    protected $parameters = array(
+        'primary_string'  => '',
+    );
+
     /**
      * Да да, тот самый контейнер, про который вы подумали
      *
