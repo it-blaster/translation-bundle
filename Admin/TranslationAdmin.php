@@ -50,11 +50,7 @@ class TranslationAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('Alias', null, array(
-//                'attr' => array(
-//                    'readonly' => true
-//                )
-            ))
+            ->add('Alias')
             ->add('TranslationI18ns', new TranslationCollectionType(), array(
                 'label'     => FALSE,
                 'required'  => FALSE,
