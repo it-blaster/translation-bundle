@@ -15,7 +15,7 @@
         "symfony/symfony": ">=2.2",
         "propel/propel": "~2.0@dev",
         "propel/propel-bundle": ">=1.4",
-        "jms/i18n-routing-bundle": ">=1.1.1",
+        "jms/i18n-routing-bundle": ">=1.1.1"
     },
     "autoload": {
         "psr-0": { "ItBlaster\\TranslationBundle": "" }
