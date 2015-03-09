@@ -21,7 +21,7 @@ class TranslationPeer extends BaseTranslationPeer
         $translation_list = TranslationQuery::create()->joinWithI18n('en')->find();
         foreach ($translation_list as $translation_item) {
             /** @var Translation $translation_item */
-            $translation_list_en[$translation_item->getId()] = $translation_item->getTitle();
+            $translation_list_en[$translation_item->getId()] = $translation_item->getAlias();
         }
 
         $translation_list = TranslationQuery::create()->joinWithI18n($locale)->find();

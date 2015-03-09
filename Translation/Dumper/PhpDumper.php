@@ -75,8 +75,8 @@ class PhpDumper extends ArrayStructureDumper
                 if ($translation_item->getTitle() === null) {
                     $translation_item->setTitle('')->save();
                 }
-                $translation_item->setLocale('en');
-                $translation_strings[$locale][$translation_item->getTitle()] = $translation_item;
+                //$translation_item->setLocale('en');
+                $translation_strings[$locale][$translation_item->getAlias()] = $translation_item;
             }
         }
 
@@ -93,7 +93,7 @@ class PhpDumper extends ArrayStructureDumper
                     if (!isset($translation_strings[$locale][$k])) {
                         /** @var Translation $trans_obj */
                         $trans_obj = $translation_strings['en'][$k];
-                        $this->setParamsTransObj($trans_obj,$locale);
+                        $this->setParamsTransObj($trans_obj,$locale,$k);
                     }
                 }
             }
@@ -110,9 +110,10 @@ class PhpDumper extends ArrayStructureDumper
      * @param $locale
      * @param string $title
      */
-    private function setParamsTransObj(&$trans_obj, $locale, $title='')
+    private function setParamsTransObj(&$trans_obj, $locale, $alias, $title='')
     {
         $trans_obj
+            ->setAlias($alias)
             ->setLocale($locale)
             ->setTitle($title)
             ->save();
