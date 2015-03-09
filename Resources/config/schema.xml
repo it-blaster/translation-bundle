@@ -17,6 +17,10 @@
         <behavior name="it_blaster_translation_model" >
             <parameter name="primary_string" value="title" />
         </behavior>
+
+        <behavior name="it_blaster_i18n">
+            <parameter name="primary_string" value="alias" />
+        </behavior>
     </table>
 
 </database>

@@ -48,7 +48,7 @@ class TranslationModelBehavior extends TranslationBehavior
  */
 public function '.$this->get_column_method.$locale.'()
 {
-    $this->setLocale("'.$locale.'")->'.$this->get_column_method.'();
+    return $this->setLocale("'.$locale.'")->'.$this->get_column_method.'();
 }
     ';
         }

@@ -75,7 +75,6 @@ class PhpDumper extends ArrayStructureDumper
                 if ($translation_item->getTitle() === null) {
                     $translation_item->setTitle('')->save();
                 }
-                //$translation_item->setLocale('en');
                 $translation_strings[$locale][$translation_item->getAlias()] = $translation_item;
             }
         }
