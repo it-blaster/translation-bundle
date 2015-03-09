@@ -34,7 +34,6 @@ class Configuration implements ConfigurationInterface
                     ->ifString()
                     ->then(function($v) { return preg_split('/\s*,\s*/', $v); })
                 ->end()
-//                ->requiresAtLeastOneElement()
                 ->prototype('scalar')->end()
             ->end()
         ->end();
