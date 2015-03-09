@@ -51,7 +51,7 @@ class PhpDumper extends ArrayStructureDumper
         $this->writer
             ->reset()
             ->writeln('<?php')
-            ->writeln('return \Itblaster\TranslationBundle\Model\TranslationPeer::getListForLocale("' . $this->locale . '");')
+            ->writeln('return \ItBlaster\TranslationBundle\Model\TranslationPeer::getListForLocale("' . $this->locale . '");')
             ->indent();
         $this->dumpStructureRecursively($structure);
 
