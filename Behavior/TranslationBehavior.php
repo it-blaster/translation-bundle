@@ -89,7 +89,7 @@ protected function sortI18ns($elements) {
             $languages.=')';
 
             $toString .= '
-        $to_string = $this->isNew() ? "Новая запись" : "";
+        $to_string = $this->isNew() ? "Новая запись" : $this->getSlug();
         $languages = '.$languages.';
         foreach ($languages as $language) {
             $str = $this->setLocale($language)->'.$get_primary_string.'();
