@@ -29,16 +29,16 @@ class TranslationAdmin extends Admin
         ));
         foreach ($this->getConfigurationPool()->getContainer()->getParameter('it_blaster_translation.locales') as $locale) {
             $listMapper->add('getTitle'.$locale, null, array(
-                'label'         =>  $locale,
-                'sortable' => false
+                'label'     =>  $locale,
+                'sortable'  => false
             ));
         }
 
         $listMapper->add('_action', 'actions', array(
-            'label' => 'Редактирование',
-            'actions' => array(
-                'edit' => array(),
-                'delete' => array(),
+            'label'     => 'Редактирование',
+            'actions'   => array(
+                'edit'      => array(),
+                'delete'    => array(),
             )
         ))
         ;
@@ -50,7 +50,11 @@ class TranslationAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('Alias')
+            ->add('Alias', null, array(
+                'attr' => array(
+                    'maxlength' => 255
+                )
+            ))
             ->add('TranslationI18ns', new TranslationCollectionType(), array(
                 'label'     => FALSE,
                 'required'  => FALSE,
@@ -61,19 +65,27 @@ class TranslationAdmin extends Admin
                     'data_class' => 'ItBlaster\TranslationBundle\Model\TranslationI18n',
                     'columns'    => array(
                         'title' => array(
-                            'label' => "Заголовок",
-                            'type'  => 'text',
+                            'label'     => "Заголовок",
+                            'type'      => 'text',
                             'required'  => TRUE,
-                        )
+                            'options'   => array(
+                                'attr' => array(
+                                    'maxlength' => 255
+                                )
+                            )
+                        ),
                     ),
                     'attr' => array(
-                        'class'=>'block_form'
+                        'class' => 'block_form'
                     )
                 )
             ))
         ;
     }
 
+    /**
+     * @param RouteCollection $collection
+     */
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection
@@ -81,11 +93,19 @@ class TranslationAdmin extends Admin
         ;
     }
 
+    /**
+     * @param mixed $object
+     * @return mixed|void
+     */
     public function postPersist($object)
     {
         $this->ClearCache();
     }
 
+    /**
+     * @param mixed $object
+     * @return mixed|void
+     */
     public function postUpdate($object)
     {
         $this->ClearCache();
