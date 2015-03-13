@@ -94,8 +94,12 @@ protected function sortI18ns($elements) {
         foreach ($languages as $language) {
             $str = $this->setLocale($language)->'.$get_primary_string.'();
             if ($str) {
-                return $str;
+		        $to_string = $str;
+                break;
             }
+        }
+        if (mb_strlen($to_string, "UTF-8")>26) {
+            $to_string = mb_substr($to_string, 0, 26, "utf-8")."...";
         }
         return $to_string;';
         } else { //нет языковых версий
