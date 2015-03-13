@@ -35,7 +35,7 @@ abstract class TranslationBehavior extends \Behavior
 /**
  * Сортирует элементы массива по порядку следования языков
  *
- * @param $elements
+ * @param $elementsf
  * @return array
  */
 protected function sortI18ns($elements) {
@@ -101,7 +101,12 @@ protected function sortI18ns($elements) {
         if (mb_strlen($to_string, "UTF-8")>26) {
             $to_string = mb_substr($to_string, 0, 26, "utf-8")."...";
         }
-        return $to_string;';
+        ';
+            if ($this->getTable()->hasColumn('slug')) {
+                $toString .= '$to_string = $to_string ? $to_string : $this->getSlug();
+        ';
+            }
+        $toString .= 'return $to_string;';
         } else { //нет языковых версий
             $toString .= '
         return $this->'.$get_primary_string.'() ? $this->'.$get_primary_string.'() : "Новая запись";';
