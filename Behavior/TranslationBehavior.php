@@ -127,7 +127,7 @@ protected function sortI18ns($elements) {
         $class_name = $this->CamelCase($this->getTable()->getName());
         $get_i18ns_method = '
     /**
-     * Gets an array of FaqQuestionGroupI18n objects which contain a foreign key that references this object.
+     * Gets an array of '.$class_name.'I18n objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
