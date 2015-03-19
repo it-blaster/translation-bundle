@@ -89,7 +89,7 @@ protected function sortI18ns($elements) {
             $languages.=')';
 
             $toString .= '
-        $to_string = $this->isNew() ? "Новая запись" : "";
+        $to_string = $this->isNew() ? "New object" : "";
         $languages = '.$languages.';
         foreach ($languages as $language) {
             $str = $this->setLocale($language)->'.$get_primary_string.'();
@@ -109,7 +109,7 @@ protected function sortI18ns($elements) {
         $toString .= 'return $to_string;';
         } else { //нет языковых версий
             $toString .= '
-        return $this->'.$get_primary_string.'() ? $this->'.$get_primary_string.'() : "Новая запись";';
+        return $this->'.$get_primary_string.'() ? $this->'.$get_primary_string.'() : "New object";';
         }
         $toString .= '
     }
