@@ -11,6 +11,7 @@ namespace ItBlaster\TranslationBundle\Behavior;
 class TranslationModelBehavior extends TranslationBehavior
 {
     protected $get_column_method;
+    protected $set_column_method;
 
     /**
      * @throws InvalidArgumentException
@@ -18,6 +19,7 @@ class TranslationModelBehavior extends TranslationBehavior
     public function modifyTable()
     {
         $this->get_column_method = 'get'.$this->getColumnForParameter('primary_string')->getPhpName();
+        $this->set_column_method = 'set'.$this->getColumnForParameter('primary_string')->getPhpName();
     }
 
     /**
@@ -42,13 +44,23 @@ class TranslationModelBehavior extends TranslationBehavior
         foreach ($locales as $locale) {
             $script .= '
 /**
- * Возврашает '.$field.' в локале '.$locale.'
+ * Return '.$field.' in locale '.$locale.'
  *
  * @return string
  */
 public function '.$this->get_column_method.$locale.'()
 {
     return $this->setLocale("'.$locale.'")->'.$this->get_column_method.'();
+}
+
+/**
+ * Set '.$field.' in locale '.$locale.'
+ */
+public function '.$this->set_column_method.$locale.'($v)
+{
+    $this->setLocale("'.$locale.'")->'.$this->set_column_method.'($v);
+
+    return $this;
 }
     ';
         }

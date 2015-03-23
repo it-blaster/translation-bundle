@@ -28,9 +28,10 @@ class TranslationAdmin extends Admin
             'sortable' => false
         ));
         foreach ($this->getConfigurationPool()->getContainer()->getParameter('it_blaster_translation.locales') as $locale) {
-            $listMapper->add('getTitle'.$locale, null, array(
+            $listMapper->add('title'.$locale, null, array(
                 'label'     =>  $locale,
-                'sortable'  => false
+                'sortable'  => false,
+                'editable'  => true,
             ));
         }
 
