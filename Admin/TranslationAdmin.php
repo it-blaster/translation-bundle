@@ -24,7 +24,7 @@ class TranslationAdmin extends Admin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->add('alias', null, array(
+        $listMapper->add('aliasShort', null, array(
             'sortable' => false
         ));
         foreach ($this->getConfigurationPool()->getContainer()->getParameter('it_blaster_translation.locales') as $locale) {
