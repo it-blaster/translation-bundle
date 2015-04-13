@@ -19,9 +19,11 @@ class TranslationPeer extends BaseTranslationPeer
         $result = array();
 
         $translation_list = TranslationQuery::create()->joinWithI18n('en')->find();
+
         foreach ($translation_list as $translation_item) {
             /** @var Translation $translation_item */
-            $translation_list_en[$translation_item->getId()] = $translation_item->getAlias();
+            $translation_list_en[$translation_item->getId()]['alias'] = $translation_item->getAlias();
+            $translation_list_en[$translation_item->getId()]['title'] = $translation_item->getTitle();
         }
 
         $translation_list = TranslationQuery::create()->joinWithI18n($locale)->find();
@@ -30,8 +32,8 @@ class TranslationPeer extends BaseTranslationPeer
             $translation_list_locale[$translation_item->getId()] = $translation_item->getTitle();
         }
 
-        foreach ($translation_list_en as $id => $translation_title_en) {
-            $result[$translation_title_en] = isset($translation_list_locale[$id]) && $translation_list_locale[$id] ?  $translation_list_locale[$id] : $translation_title_en;
+        foreach ($translation_list_en as $id => $translation_item) {
+            $result[$translation_item['alias']] = isset($translation_list_locale[$id]) && $translation_list_locale[$id] ?  $translation_list_locale[$id] : $translation_item['title'];
         }
 
         return $result;
