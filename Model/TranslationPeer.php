@@ -33,7 +33,9 @@ class TranslationPeer extends BaseTranslationPeer
         }
 
         foreach ($translation_list_en as $id => $translation_item) {
-            $result[$translation_item['alias']] = isset($translation_list_locale[$id]) && $translation_list_locale[$id] ?  $translation_list_locale[$id] : $translation_item['title'];
+            $result[$translation_item['alias']] = isset($translation_list_locale[$id]) && $translation_list_locale[$id] ?
+                $translation_list_locale[$id] :
+                ($translation_item['title'] ? $translation_item['title'] : $translation_item['alias']);
         }
 
         return $result;
