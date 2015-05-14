@@ -67,7 +67,7 @@ class TranslationAdmin extends Admin
                     'columns'    => array(
                         'title' => array(
                             'label'     => "Заголовок",
-                            'type'      => 'text',
+                            'type'      => 'textarea',
                             'required'  => TRUE,
                             'options'   => array(
                                 'attr' => array(
