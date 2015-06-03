@@ -221,6 +221,58 @@ protected function sortI18ns($elements) {
         $script = $parser->getCode();
     }
 
+    public function queryFilter(&$script, $builder)
+    {
+        $useI18nQueryMethod = $this->getUseI18nQueryMethod($builder);
+
+        $parser = new \PropelPHPParser($script, true);
+        $parser->replaceMethod('useI18nQuery', $useI18nQueryMethod);
+        $script = $parser->getCode();
+    }
+
+    /**
+     * Добавляем неймспейс к phpDoc-у
+     *
+     * @param \QueryBuilder $builder
+     *
+     * @return string
+     */
+    protected function getUseI18nQueryMethod(\QueryBuilder $builder)
+    {
+
+        $currentTable = $this->getTable();
+        $db = $currentTable->getDatabase();
+
+        $i18nTableName = $currentTable->getName() . '_i18n';
+        $i18nTable = $db->getTable($i18nTableName);
+        foreach ($i18nTable->getForeignKeys() as $fk) {
+            if ($fk->getForeignTableName() == $currentTable->getName()) {
+                $foreignKey = $fk;
+            }
+        }
+
+        $script = '
+
+    /**
+     * Use the I18n relation query object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $locale Locale to use for the join condition, e.g. \'fr_FR\'
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, \'left join\', \'right join\', \'inner join\'. Defaults to left join.
+     *
+     * @return    \\' . $builder->getNewStubQueryBuilder($i18nTable)->getFullyQualifiedClassname() . ' A secondary query class using the current class as primary query
+     */
+    public function useI18nQuery($locale = \'ru\', $relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinI18n($locale, $relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : \''. $builder->getRefFKPhpNameAffix($foreignKey) .'\', \'\\'. $builder->getNewStubQueryBuilder($i18nTable)->getFullyQualifiedClassname() .'\');
+    }';
+        return $script;
+    }
+
     /**
      * Выкидываем эксепшн с ошибкой
      *
