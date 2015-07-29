@@ -245,6 +245,9 @@ protected function sortI18ns($elements) {
 
         $i18nTableName = $currentTable->getName() . '_i18n';
         $i18nTable = $db->getTable($i18nTableName);
+        if (!$i18nTable) {
+            $this->exceptionError('Table '.$i18nTableName.' not found');
+        }
         foreach ($i18nTable->getForeignKeys() as $fk) {
             if ($fk->getForeignTableName() == $currentTable->getName()) {
                 $foreignKey = $fk;
@@ -281,6 +284,15 @@ protected function sortI18ns($elements) {
      */
     protected function exceptionError($error)
     {
-        throw new \Exception('<------ERROR------- '.$error.' ------ERROR------->');
+        throw new \Exception('
+
+
+
+        <------ERROR------- '.$error.' ------ERROR------->
+
+
+
+
+        ');
     }
 }
