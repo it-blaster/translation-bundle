@@ -114,6 +114,20 @@ return \ItBlaster\TranslationBundle\Model\TranslationPeer::getListForLocale("en"
 'php app/console translation:extract en --dir=./src/ --output-dir=./src/App/MainBundle/Resources/translations/ --exclude-name="*.php" --output-format="php"'
 ```
 
+**Особенности подключения**
+
+1. Если в проекте не используется JMSTranslationBundle, то необходимо добавить его в composer.json
+http://jmsyst.com/bundles/JMSTranslationBundle/master/installation
+2. В каких-то случаях не переопределяется сервис **jms_translation.dumper.php_dumper.class**, если этого не происходит необходимо в app/config.yml прописать 
+``` bash
+parameters:
+    ...
+    jms_translation.dumper.php_dumper.class: ItBlaster\TranslationBundle\Translation\Dumper\PhpDumper
+    ...
+```
+
+
+
 Credits
 -------
 
